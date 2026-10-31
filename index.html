@@ -43,7 +43,7 @@ async function askGemini(mood) {
     resultBox.innerHTML = '<span class="loading">Geminiが考えています... 🤖</span>';
     try {
         // 自前のサーバー（VercelのAPI）を呼び出す（キーはここには書かない）
-        const response = await fetch('api/gemini', {
+        const response = await fetch('./api/gemini.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ mood: mood })
