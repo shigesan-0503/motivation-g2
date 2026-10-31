@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今の気分とGemini AI</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: #f5f7fb; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { color: #1a73e8; text-align: center; }
+        .mood-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; }
+        .mood-btn { padding: 12px; border: 1px solid #e0e0e0; background: #fff; border-radius: 8px; cursor: pointer; text-align: left; }
+        .mood-btn:hover { background: #e8f0fe; border-color: #1a73e8; }
+        #result-box { padding: 15px; background: #f8f9fa; border-left: 4px solid #1a73e8; min-height: 50px; white-space: pre-wrap; margin-top: 15px; }
+        .loading { color: #666; font-style: italic; }
+        .error { color: #dc3545; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>✨ 今の気分とGemini AI</h1>
+    <p>今の気分を1つ選んでください。ワンタップでAIが答えます。</p>
+    
+    <div class="mood-container">
+        <button class="mood-btn" onclick="askGemini('ワクワク・活動的')">🚀 ワクワク・活動的</button>
+        <button class="mood-btn" onclick="askGemini('お疲れ・癒やされたい')">☕ お疲れ・癒やされたい</button>
+        <button class="mood-btn" onclick="askGemini('モヤモヤ・悩み中')">💭 モヤモヤ・悩み中</button>
+        <button class="mood-btn" onclick="askGemini('憂鬱・リフレッシュしたい')">🍃 憂鬱・リフレッシュ</button>
+        <button class="mood-btn" onclick="askGemini('集中・作業モード')">📝 集中・作業モード</button>
+        <button class="mood-btn" onclick="askGemini('退屈・暇つぶし')">🎮 退屈・暇つぶし</button>
+        <button class="mood-btn" onclick="askGemini('お腹ペコペコ・食欲旺盛')">🍔 お腹ペコペコ</button>
+        <button class="mood-btn" onclick="askGemini('穏やか・平和')">🕊️ 穏やか・平和</button>
+        <button class="mood-btn" onclick="askGemini('イライラ・発散したい')">🔥 イライラ・発散</button>
+        <button class="mood-btn" onclick="askGemini('ノスタルジック・懐かしい')">🌆 ノスタルジック</button>
+    </div>
+
+    <div id="result-box">気分を選択すると、ここにAIのアドバイスが表示されます。</div>
+</div>
+
+<script>
+async function askGemini(mood) {
+    const resultBox = document.getElementById('result-box');
+    resultBox.innerHTML = '<span class="loading">Geminiが考えています... 🤖</span>';
+    try {
+        // 自前のサーバー（VercelのAPI）を呼び出す（キーはここには書かない）
+        const response = await fetch('./api/gemini', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mood: mood })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            resultBox.textContent = data.reply;
+        } else {
+            resultBox.innerHTML = `<span class="error">エラー: ${data.error}</span>`;
+        }
+    } catch (error) {
+        resultBox.innerHTML = '<span class="error">通信エラーが発生しました。</span>';
+    }
+}
+</script>
+</body>
+</html>
