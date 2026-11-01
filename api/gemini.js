@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
     const url = `https://googleapis.com{apiKey}`;
     //const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
+alert("TEST");
     const promptText = `私は今【${mood}】という気分です。この気分にぴったりな、元気が出る一言メッセージか、おすすめの過ごし方を50文字程度で優しく提案してください。`;
 
     try {
