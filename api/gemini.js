@@ -6,7 +6,6 @@ export default async function handler(req, res) {
 
     const { mood } = req.body;
     const apiKey = process.env.GEMINI_API_KEY;
-    //const apiKey = "AQ.Ab8RN6IFVRyPHF_LJYF_hEukZk3TXtHTBB-BBL6Fb1g3L1hQKQ";
 
     if (!apiKey) {
         return res.status(500).json({ error: 'APIキーが設定されていません。' });
