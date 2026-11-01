@@ -42,7 +42,6 @@ async function askGemini(mood) {
     const resultBox = document.getElementById('result-box');
     resultBox.innerHTML = '<span class="loading">Geminiが考えています... 🤖</span>';
 
-    console.log("1");
     try {
         // 自前のサーバー（VercelのAPI）を呼び出す（キーはここには書かない）
         const response = await fetch('/api/gemini', {
