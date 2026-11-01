@@ -1,7 +1,5 @@
 
 export default async function handler(req, res) {
-    console.log("2:header");
-    console.log(req.method);
     
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method Not Allowed' });
@@ -10,9 +8,6 @@ export default async function handler(req, res) {
     const { mood } = req.body;
     const apiKey = process.env.GEMINI_API_KEY;
 
-    console.log(mood);
-    console.log(apiKey);
-    
     if (!apiKey) {
         return res.status(500).json({ error: 'APIキーが設定されていません。' });
     }
@@ -21,6 +16,9 @@ export default async function handler(req, res) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
     const promptText = `私は今【${mood}】という気分です。この気分にぴったりな、元気が出る一言メッセージか、おすすめの過ごし方を50文字程度で優しく提案してください。`;
 
+    console.log(url);
+    console.log(promptText);
+    
     try {
         const response = await fetch(url, {
             method: 'POST',
@@ -39,6 +37,7 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: data.error.message });
         }
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: 'サーバー内部でエラーが発生しました。' });
     }
 }
