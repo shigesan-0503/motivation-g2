@@ -58,6 +58,7 @@ async function askGemini(mood) {
             resultBox.innerHTML = `<span class="error">エラー: ${data.error}</span>`;
         }
     } catch (error) {
+        console.log(error);
         resultBox.innerHTML = '<span class="error">通信エラーが発生しました。</span>';
     }
 }
