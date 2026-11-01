@@ -29,13 +29,29 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
-        
+
         if (response.ok) {
-            const reply = data.candidates.content.parts.text;
+        // 💡 修正ポイント：[0] を追加して、オプショナルチェーニング（?.）で安全に取得する
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (reply) {
             return res.status(200).json({ reply: reply });
         } else {
-            return res.status(500).json({ error: data.error.message });
+            console.error("Geminiのレスポンス構造が想定外です:", JSON.stringify(data));
+            return res.status(500).json({ error: 'AIからの返答データが空でした。' });
         }
+            
+    } else {
+        // Gemini API側からエラー（キーが無効など）が返ってきた場合
+        console.error("Gemini API エラー詳細:", JSON.stringify(data));
+        return res.status(500).json({ error: data.error?.message || 'Gemini APIでエラーが発生しました。' });
+    }
+        //if (response.ok) {
+        //    const reply = data.candidates.content.parts.text;
+        //    return res.status(200).json({ reply: reply });
+        //} else {
+        //    return res.status(500).json({ error: data.error.message });
+        //}
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'サーバー内部でエラーが発生しました。' });
